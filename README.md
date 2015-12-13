@@ -6,11 +6,17 @@ This allows you to use constructs like the following on lists of any types:
 ```
 
 myList.Map(func(t type1) type1 {
+
 ...
+
 }).Filter(func(t type1) bool {
+
 ...
+
 }).Take(3).Reduce(initialValue type1, func (prev type1, current type1) type1 {
+
 ...
+
 })
 
 ```
@@ -35,6 +41,37 @@ While the `for` loop in Go is quite nice, it still involves some boilerplate cod
 - __TakeWhile__ (take the first elements that satisfy a particular criteria)
 - __Drop__ (create a new list by excluding the first n elements of another list)
 - __DropWhile__ (exclude the first elements that satisfy a particular criteria)
+
+## How to Use
+
+Assuming you have installed `fungen` (see below), you can start by including the comment in your file for `go generate` to process. Let's assume we want to use the above methods with a list of strings (type []string).
+
+Add the following comment in your source code:
+
+```
+//go:generate fungen -types string
+```
+
+Now run the `go generate` command in the same directory where this source file is located. This will generate a file named `fungen_string.go` in this directory. This file will contain the type and method definitions that you'll need.
+
+If you take a look at the file, you'll see that a new type has been created:
+
+```
+type stringList []string
+```
+
+If you now use this type (`stringList`) in place of `[]string`, you'll be able to use all the above mentioned methods on that list of string.
+
+```
+
+words := stringList{"calculator", "skip", "grape", "obtainable", "inexpensive", "panoramic", "powerful"}
+
+wordsWithLengthLessThan7 := words.Filter(func(w string) bool {
+  return len(w) < 7  
+})
+// wordsWithLengthLessThan7 = [skip grape]
+
+```
 
 ## Installation
 
