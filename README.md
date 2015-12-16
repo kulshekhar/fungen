@@ -1,11 +1,11 @@
 # fungen [![Build Status](https://api.travis-ci.org/kulshekhar/fungen.svg?branch=master)](https://travis-ci.org/kulshekhar/fungen.svg)
-==========
+
 
 fungen is a tool that can be used with `go generate` to automate the creation of list like types and methods like Map, Filter, Reduce, etc on these types.
 
 This allows you to use constructs like the following on lists of any types:
 
-```
+```go
 
 myList.Map(func(t type1) type1 {
 
@@ -50,7 +50,7 @@ Assuming you have installed `fungen` (see below), you can start by including the
 
 Add the following comment in your source code:
 
-```
+```go
 //go:generate fungen -types string
 ```
 
@@ -58,13 +58,13 @@ Now run the `go generate` command in the same directory where this source file i
 
 If you take a look at the file, you'll see that a new type has been created:
 
-```
+```go
 type stringList []string
 ```
 
 If you now use this type (`stringList`) in place of `[]string`, you'll be able to use all the above mentioned methods on that list of string.
 
-```
+```go
 
 words := stringList{"calculator", "skip", "grape", "obtainable", "inexpensive", "panoramic", "powerful"}
 
@@ -90,7 +90,7 @@ fungen -package PackageName -types comma,Separated,Types,With,Optional:Opt,short
 
 ### Use from source code:
 
-```
+```go
 //go:generate fungen -types string,int
 ```
 followed by
@@ -128,7 +128,7 @@ Each of the comma separated values can themselves optionally be a colon separate
 
 If `-types int,string` is used, the types generated will be:
 
-```
+```go
 type intList []int
 type stringList []string
 
@@ -172,7 +172,7 @@ If `-types int:I,string:Str` is used, the names of the common set of methods gen
 
 The types will be named as follows:
 
-```
+```go
 type IList []int
 type StrList []string
 
