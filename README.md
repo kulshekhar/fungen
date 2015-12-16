@@ -1,4 +1,4 @@
-# fungen [![Build Status](https://api.travis-ci.org/kulshekhar/fungen.svg?branch=master)](https://travis-ci.org/kulshekhar/fungen.svg)
+# fungen [![Build Status](https://api.travis-ci.org/kulshekhar/fungen.svg?branch=master)](https://travis-ci.org/kulshekhar/fungen)
 
 
 fungen is a tool that can be used with `go generate` to automate the creation of list like types and methods like Map, Filter, Reduce, etc on these types.
