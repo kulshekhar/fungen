@@ -153,55 +153,33 @@ func generate(packageName, typeName, listname string, m map[string]string) strin
 }
 
 func getMapFunction(listName, typeName, targetType, targetTypeName string) string {
+	targetListName := targetType + "List"
 	if targetTypeName == "" {
-		return fmt.Sprintf(`
-            // Map%[4]s is a method on %[1]s that takes a function of type %[2]s -> %[3]s and applies it to every member of %[1]s
-            func (l %[1]s) Map%[4]s(f func(%[2]s) %[3]s) %[1]s {
-                l2 := make(%[1]s, len(l))
-                for i, t := range l {
-                    l2[i] = f(t)
-                }
-                return l2
-            }
-            `, listName, typeName, targetType, targetTypeName)
+		targetListName = listName
 	}
 
 	return fmt.Sprintf(`
         // Map%[4]s is a method on %[1]s that takes a function of type %[2]s -> %[3]s and applies it to every member of %[1]s
-        func (l %[1]s) Map%[4]s(f func(%[2]s) %[3]s) %[5]sList {
+        func (l %[1]s) Map%[4]s(f func(%[2]s) %[3]s) %[6]s {
             l2 := make(%[5]sList, len(l))
             for i, t := range l {
                 l2[i] = f(t)
             }
             return l2
         }
-        `, listName, typeName, targetType, strings.Title(targetTypeName), targetTypeName)
+        `, listName, typeName, targetType, strings.Title(targetTypeName), targetTypeName, targetListName)
 
 }
 
 func getPMapFunction(listName, typeName, targetType, targetTypeName string) string {
+	targetListName := targetType + "List"
 	if targetTypeName == "" {
-		return fmt.Sprintf(`
-            // PMap%[4]s is similar to Map%[4]s except that it applies the function on each member in parallel.
-            func (l %[1]s) PMap%[4]s(f func(%[2]s) %[3]s) %[1]s {
-                wg := sync.WaitGroup{}
-                l2 := make(%[1]s, len(l))
-                for i, t := range l {
-                    wg.Add(1)
-                    go func(i int, t %[2]s){
-                        l2[i] = f(t)
-                        wg.Done()
-                    }(i, t)
-                }
-                wg.Wait()
-                return l2
-            }
-            `, listName, typeName, targetType, targetTypeName)
+		targetListName = listName
 	}
 
 	return fmt.Sprintf(`
         // PMap%[4]s is similar to Map%[4]s except that it executes the function on each member in parallel.
-        func (l %[1]s) PMap%[4]s(f func(%[2]s) %[3]s) %[5]sList {
+        func (l %[1]s) PMap%[4]s(f func(%[2]s) %[3]s) %[6]s {
             wg := sync.WaitGroup{}
             l2 := make(%[5]sList, len(l))
             for i, t := range l {
@@ -214,7 +192,7 @@ func getPMapFunction(listName, typeName, targetType, targetTypeName string) stri
             wg.Wait()
             return l2
         }
-        `, listName, typeName, targetType, strings.Title(targetTypeName), targetTypeName)
+        `, listName, typeName, targetType, strings.Title(targetTypeName), targetTypeName, targetListName)
 
 }
 
