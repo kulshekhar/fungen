@@ -54,7 +54,7 @@ Add the following comment in your source code:
 //go:generate fungen -types string
 ```
 
-Now run the `go generate` command in the same directory where this source file is located. This will generate a file named `fungen_string.go` in this directory. This file will contain the type and method definitions that you'll need.
+Now run the `go generate` command in the same directory where this source file is located. This will generate a file named `fungen_auto.go` in this directory. This file will contain the type and method definitions that you'll need.
 
 If you take a look at the file, you'll see that a new type has been created:
 
@@ -97,7 +97,7 @@ followed by
 ```
 go generate
 ```
-on the command line, in the directory where you wish the generated files to be stored.
+on the command line, in the directory where you wish the generated file to be stored.
 
 
 ### Use From the command line:
@@ -106,7 +106,7 @@ on the command line, in the directory where you wish the generated files to be s
 fungen -types string,int
 ```
 
-This tool will generate as many files as the number of types specified. All the generated files begin with the string `fungen_`. Before running `go generate`, it is recommended that the old generated files be deleted. 
+This tool will generate as a file named `fungen_auto.go`.
 
 ## Explanation of Options
 
@@ -114,7 +114,7 @@ This tool will generate as many files as the number of types specified. All the 
 -package PackageName
 ```
 
-The `-package` parameter is optional. If specified, it will generate the code files by using `package PackageName` at the top. If omitted, it will generate the code files by using `package main` at the top. 
+The `-package` parameter is optional. If specified, it will generate the code file by using `package PackageName` at the top. If omitted, it will generate the code file by using `package main` at the top. 
 
 ```
 -types comma,Separated,Types,With,Optional:Opt,short:Sh,names:n
