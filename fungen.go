@@ -13,7 +13,7 @@ import (
 var (
 	packageName = flag.String("package", "main", "(Optional) Name of the package.")
 	types       = flag.String("types", "", "Comma-separated list of type names, eg. 'int,string,CustomType'. The values can themselves be colon (:) separated to specify the names of entities in the generated, eg: int:I,string:Str,CustomType:CT.")
-	outputName  = flag.String("filename", "fungen_auto.go", "Filename for generated package")
+	outputName  = flag.String("filename", "fungen_auto.go", "(Optional) Filename for generated package")
 	testrun     = flag.Bool("test", false, "whether to display the generated code instead of writing out to a file.")
 )
 
