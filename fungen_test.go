@@ -7,7 +7,7 @@ import (
 
 func TestFilterGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getFilterFunction(listName, typeName))
+	result := f(getFilterFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // Filter is a method on %[1]s that takes a function of type %[2]s -> bool returns a list of type %[1]s which contains all members from the original list for which the function returned true
@@ -31,7 +31,7 @@ func TestFilterGeneration(t *testing.T) {
 
 func TestPFilterGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getPFilterFunction(listName, typeName))
+	result := f(getPFilterFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // PFilter is similar to the Filter method except that the filter is applied to all the elements in parallel. The order of resulting elements cannot be guaranteed. 
@@ -64,7 +64,7 @@ func TestPFilterGeneration(t *testing.T) {
 
 func TestEachGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getEachFunction(listName, typeName))
+	result := f(getEachFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // Each is a method on %[1]s that takes a function of type %[2]s -> void and applies the function to each member of the list and then returns the original list.
@@ -85,7 +85,7 @@ func TestEachGeneration(t *testing.T) {
 
 func TestEachIGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getEachIFunction(listName, typeName))
+	result := f(getEachIFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // EachI is a method on %[1]s that takes a function of type (int, %[2]s) -> void and applies the function to each member of the list and then returns the original list. The int parameter to the function is the index of the element.
@@ -106,7 +106,7 @@ func TestEachIGeneration(t *testing.T) {
 
 func TestDropWhileGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getDropWhileFunction(listName, typeName))
+	result := f(getDropWhileFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // DropWhile is a method on %[1]s that takes a function of type %[2]s -> bool and returns a list of type %[1]s which excludes the first members from the original list for which the function returned true
@@ -130,7 +130,7 @@ func TestDropWhileGeneration(t *testing.T) {
 
 func TestTakeWhileGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getTakeWhileFunction(listName, typeName))
+	result := f(getTakeWhileFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // TakeWhile is a method on %[1]s that takes a function of type %[2]s -> bool and returns a list of type %[1]s which includes only the first members from the original list for which the function returned true
@@ -153,7 +153,7 @@ func TestTakeWhileGeneration(t *testing.T) {
 
 func TestTakeGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getTakeFunction(listName, typeName))
+	result := f(getTakeFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // Take is a method on %[1]s that takes an integer n and returns the first n elements of the original list. If the list contains fewer than n elements then the entire list is returned.
@@ -174,7 +174,7 @@ func TestTakeGeneration(t *testing.T) {
 
 func TestDropGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getDropFunction(listName, typeName))
+	result := f(getDropFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // Drop is a method on %[1]s that takes an integer n and returns all but the first n elements of the original list. If the list contains fewer than n elements then an empty list is returned.
@@ -196,7 +196,7 @@ func TestDropGeneration(t *testing.T) {
 
 func TestReduceGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getReduceFunction(listName, typeName))
+	result := f(getReduceFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // Reduce is a method on %[1]s that takes a function of type (%[2]s, %[2]s) -> %[2]s and returns a %[2]s which is the result of applying the function to all members of the original list starting from the first member
@@ -217,7 +217,7 @@ func TestReduceGeneration(t *testing.T) {
 
 func TestReduceRightGeneration(t *testing.T) {
 	listName, typeName := "stringList", "string"
-	result := f(getReduceRightFunction(listName, typeName))
+	result := f(getReduceRightFunction(listName, typeName, "", ""))
 
 	expectedRaw := fmt.Sprintf(`
         // ReduceRight is a method on %[1]s that takes a function of type (%[2]s, %[2]s) -> %[2]s and returns a %[2]s which is the result of applying the function to all members of the original list starting from the last member
