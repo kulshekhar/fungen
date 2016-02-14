@@ -124,6 +124,20 @@ The `-types` parameter takes a comma separated list of types for which the list 
 
 Each of the comma separated values can themselves optionally be a colon separated value. If this is the case, the first part (before the colon) should be a valid type name (built in or custom) and the second is the name used in the names of the methods.
 
+```
+-filename filename.go
+```
+
+Filename for generated package (default "fungen_auto.go"). The `-filename` parameter is optional.
+
+```
+-methods Map,Filter
+```
+
+Comma separated list of methods to generate. By default generate all methods.
+
+Valid methods is: Map,PMap,Filter,PFilter,Reduce,ReduceRight,Each,EachI,Take,TakeWhile,Drop,DropWhile
+
 #### Example 1
 
 If `-types int,string` is used, the types generated will be:
