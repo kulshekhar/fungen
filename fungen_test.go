@@ -386,3 +386,26 @@ func TestPMapGeneration3(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestAllGeneration(t *testing.T) {
+	listName, typeName := "stringList", "string"
+	result := f(getAllFunction(listName, typeName, "", ""))
+
+	expectedRaw := `
+        // All is a method on stringList that returns true if all the members of the list satisfy a function or if the list is empty.
+        func (l stringList) All(f func(string) bool) bool {
+            for _, t := range l {
+                if !f(t) {
+                    return false
+                }
+            }
+            return true
+        }
+        `
+
+	expected := f(expectedRaw)
+
+	if result != expected {
+		t.Fail()
+	}
+}
