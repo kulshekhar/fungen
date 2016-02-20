@@ -409,3 +409,26 @@ func TestAllGeneration(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestAnyGeneration(t *testing.T) {
+	listName, typeName := "stringList", "string"
+	result := f(getAnyFunction(listName, typeName, "", ""))
+
+	expectedRaw := `
+        // Any is a method on stringList that returns true if at least one member of the list satisfies a function. It returns false if the list is empty.
+        func (l stringList) Any(f func(string) bool) bool {
+            for _, t := range l {
+                if f(t) {
+                    return true
+                }
+            }
+            return false
+        }
+        `
+
+	expected := f(expectedRaw)
+
+	if result != expected {
+		t.Fail()
+	}
+}
