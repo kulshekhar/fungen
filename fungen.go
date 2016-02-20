@@ -95,6 +95,12 @@ var (
 			needSync:     false,
 			needMapToMap: true,
 		},
+		{
+			name:         "PFilterMap",
+			method:       getPFilterMapFunction,
+			needSync:     true,
+			needMapToMap: true,
+		},
 	}
 )
 
@@ -488,6 +494,45 @@ func getFilterMapFunction(listName, typeName, targetType, targetTypeName string)
                     l2 = append(l2, fMap(t))
                 }
             }
+            return l2
+        }
+        `, listName, typeName, targetType, strings.Title(targetTypeName), targetListName)
+
+}
+
+func getPFilterMapFunction(listName, typeName, targetType, targetTypeName string) string {
+	targetListName := targetType + "List"
+	if targetTypeName == "" {
+		//there's no need for a PFilterMap function for the same time as the pfilter function suffices
+		return ""
+	}
+
+	return fmt.Sprintf(`
+        // PFilterMap%[4]s is similar to FilterMap%[4]s except that it executes the method on each member in parallel.
+        func (l %[1]s) PFilterMap%[4]s(fMap func(%[2]s) %[3]s, fFilters ...func(%[2]s) bool) %[5]s {
+            l2 := %[5]s{}
+            mutex := sync.Mutex{}
+            wg := sync.WaitGroup{}
+            wg.Add(len(l))
+            
+            for _, t := range l {
+                go func(t %[2]s){
+                    pass := true
+                    for _, f := range fFilters {
+                        if !f(t) {
+                            pass = false
+                            break
+                        }
+                    }
+                    if pass {
+                        mutex.Lock()
+                        l2 = append(l2, fMap(t))
+                        mutex.Unlock()
+                    }
+                    wg.Done()
+                }(t)
+            }
+            wg.Wait()
             return l2
         }
         `, listName, typeName, targetType, strings.Title(targetTypeName), targetListName)
