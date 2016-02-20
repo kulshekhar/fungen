@@ -433,7 +433,7 @@ func TestAnyGeneration(t *testing.T) {
 	}
 }
 
-func TestFilterMapGeneration2(t *testing.T) {
+func TestFilterMapGeneration(t *testing.T) {
 	listName, typeName, targetType, targetTypeName := "stringList", "string", "int", "int"
 	result := f(getFilterMapFunction(listName, typeName, targetType, targetTypeName))
 
@@ -453,6 +453,47 @@ func TestFilterMapGeneration2(t *testing.T) {
                     l2 = append(l2, fMap(t))
                 }
             }
+            return l2
+        }
+        `
+
+	expected := f(expectedRaw)
+
+	if result != expected {
+		t.Fail()
+	}
+}
+
+func TestPFilterMapGeneration(t *testing.T) {
+	listName, typeName, targetType, targetTypeName := "stringList", "string", "int", "int"
+	result := f(getPFilterMapFunction(listName, typeName, targetType, targetTypeName))
+
+	expectedRaw := `
+        // PFilterMapInt is similar to FilterMapInt except that it executes the method on each member in parallel.
+        func (l stringList) PFilterMapInt(fMap func(string) int, fFilters ...func(string) bool) intList {
+            l2 := intList{}
+            mutex := sync.Mutex{}
+            wg := sync.WaitGroup{}
+            wg.Add(len(l))
+            
+            for _, t := range l {
+                go func(t string){
+                    pass := true
+                    for _, f := range fFilters {
+                        if !f(t) {
+                            pass = false
+                            break
+                        }
+                    }
+                    if pass {
+                        mutex.Lock()
+                        l2 = append(l2, fMap(t))
+                        mutex.Unlock()
+                    }
+                    wg.Done()
+                }(t)
+            }
+            wg.Wait()
             return l2
         }
         `
