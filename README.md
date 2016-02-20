@@ -43,6 +43,7 @@ While the `for` loop in Go is quite nice, it still involves some boilerplate cod
 - __TakeWhile__ (take the first elements that satisfy a particular criteria)
 - __Drop__ (create a new list by excluding the first n elements of another list)
 - __DropWhile__ (exclude the first elements that satisfy a particular criteria)
+- __All__ (returns true if all the members of the list satisfy a function or if the list is empty)
 
 ## How to Use
 

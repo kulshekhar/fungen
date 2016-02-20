@@ -81,6 +81,10 @@ var (
 			name:   "EachI",
 			method: getEachIFunction,
 		},
+		{
+			name:   "All",
+			method: getAllFunction,
+		},
 	}
 )
 
@@ -419,6 +423,20 @@ func getReduceRightFunction(listName, typename, _, _ string) string {
                 t1 = f(t, t1)
             }
             return t1
+        }
+        `, listName, typename)
+}
+
+func getAllFunction(listName, typename, _, _ string) string {
+	return fmt.Sprintf(`
+        // All is a method on %[1]s that returns true if all the members of the list satisfy a function or if the list is empty. 
+        func (l %[1]s) All(f func(%[2]s) bool) bool {
+            for _, t := range l {
+                if !f(t) {
+                    return false
+                }
+            }
+            return true
         }
         `, listName, typename)
 }
