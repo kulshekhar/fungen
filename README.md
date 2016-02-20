@@ -138,7 +138,7 @@ Filename for generated package (default "fungen_auto.go"). The `-filename` param
 
 Comma separated list of methods to generate. By default generate all methods.
 
-Valid methods is: Map,PMap,Filter,PFilter,Reduce,ReduceRight,Each,EachI,Take,TakeWhile,Drop,DropWhile
+Valid methods is: Map,PMap,Filter,PFilter,Reduce,ReduceRight,Each,EachI,Take,TakeWhile,Drop,DropWhile,All,Any
 
 #### Example 1
 
