@@ -35,6 +35,7 @@ While the `for` loop in Go is quite nice, it still involves some boilerplate cod
 - __PMap__ (parallel map)
 - __Filter__ (apply a function to each member of a list to retrieve only the ones that satisfy some criteria)
 - __PFilter__ (parallel filter)
+- __FilterMap__ (applies the filter(s) and map to the list members in a single loop and returns the resulting list containing members of the mapped type)
 - __Reduce__ (perform aggregation functions on a list)
 - __ReduceRight__
 - __Each__ (execute any function on each element of a list)
@@ -138,7 +139,7 @@ Filename for generated package (default "fungen_auto.go"). The `-filename` param
 
 Comma separated list of methods to generate. By default generate all methods.
 
-Valid methods is: Map,PMap,Filter,PFilter,Reduce,ReduceRight,Each,EachI,Take,TakeWhile,Drop,DropWhile,All,Any
+Valid methods is: Map,PMap,Filter,PFilter,Reduce,ReduceRight,Each,EachI,Take,TakeWhile,Drop,DropWhile,All,Any,FilterMap
 
 #### Example 1
 
@@ -165,6 +166,8 @@ Drop
 DropWhile
 Each
 EachI
+All
+Any
 
 ```
 
@@ -173,6 +176,7 @@ Additionally, the `intList` type will have the following methods:
 ```
 MapString
 PMapString
+FilterMapString
 ```
 
 And the `stringList` type will have the following methods:
@@ -180,6 +184,7 @@ And the `stringList` type will have the following methods:
 ```
 MapInt
 PMapInt
+FilterMapInt
 ```
 
 #### Example 2

@@ -432,3 +432,34 @@ func TestAnyGeneration(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestFilterMapGeneration2(t *testing.T) {
+	listName, typeName, targetType, targetTypeName := "stringList", "string", "int", "int"
+	result := f(getFilterMapFunction(listName, typeName, targetType, targetTypeName))
+
+	expectedRaw := `
+        // FilterMapInt is a method on stringList that applies the filter(s) and map to the list members in a single loop and returns the resulting list.
+        func (l stringList) FilterMapInt(fMap func(string) int, fFilters ...func(string) bool) intList {
+            l2 := intList{}
+            for _, t := range l {
+                pass := true
+                for _, f := range fFilters {
+                    if !f(t){
+                        pass = false
+                        break
+                    }
+                }
+                if pass {
+                    l2 = append(l2, fMap(t))
+                }
+            }
+            return l2
+        }
+        `
+
+	expected := f(expectedRaw)
+
+	if result != expected {
+		t.Fail()
+	}
+}
