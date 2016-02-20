@@ -85,6 +85,10 @@ var (
 			name:   "All",
 			method: getAllFunction,
 		},
+		{
+			name:   "Any",
+			method: getAnyFunction,
+		},
 	}
 )
 
@@ -437,6 +441,20 @@ func getAllFunction(listName, typename, _, _ string) string {
                 }
             }
             return true
+        }
+        `, listName, typename)
+}
+
+func getAnyFunction(listName, typename, _, _ string) string {
+	return fmt.Sprintf(`
+        // Any is a method on %[1]s that returns true if at least one member of the list satisfies a function. It returns false if the list is empty. 
+        func (l %[1]s) Any(f func(%[2]s) bool) bool {
+            for _, t := range l {
+                if f(t) {
+                    return true
+                }
+            }
+            return false
         }
         `, listName, typename)
 }
