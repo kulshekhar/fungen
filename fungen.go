@@ -89,6 +89,12 @@ var (
 			name:   "Any",
 			method: getAnyFunction,
 		},
+		{
+			name:         "FilterMap",
+			method:       getFilterMapFunction,
+			needSync:     false,
+			needMapToMap: true,
+		},
 	}
 )
 
@@ -457,4 +463,33 @@ func getAnyFunction(listName, typename, _, _ string) string {
             return false
         }
         `, listName, typename)
+}
+
+func getFilterMapFunction(listName, typeName, targetType, targetTypeName string) string {
+	targetListName := targetType + "List"
+	if targetTypeName == "" {
+		//there's no need for a FilterMap function for the same time as the filter function suffices
+		return ""
+	}
+
+	return fmt.Sprintf(`
+        // FilterMap%[4]s is a method on %[1]s that applies the filter(s) and map to the list members in a single loop and returns the resulting list.
+        func (l %[1]s) FilterMap%[4]s(fMap func(%[2]s) %[3]s, fFilters ...func(%[2]s) bool) %[5]s {
+            l2 := %[5]s{}
+            for _, t := range l {
+                pass := true
+                for _, f := range fFilters {
+                    if !f(t){
+                        pass = false
+                        break
+                    }
+                }
+                if pass {
+                    l2 = append(l2, fMap(t))
+                }
+            }
+            return l2
+        }
+        `, listName, typeName, targetType, strings.Title(targetTypeName), targetListName)
+
 }
