@@ -146,7 +146,11 @@ func main() {
 	typeMap := getTypeMap(*types)
 
 	for k1, v1 := range typeMap {
-		src += generate(k1, v1+"List", typeMap, methodsMap)
+		if v1[:1] == "*" {
+			src += generate(k1, v1[1:]+"List", typeMap, methodsMap)
+		} else {
+			src += generate(k1, v1+"List", typeMap, methodsMap)
+		}
 		src = f(src)
 	}
 
