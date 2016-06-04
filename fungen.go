@@ -146,7 +146,11 @@ func main() {
 	typeMap := getTypeMap(*types)
 
 	for k1, v1 := range typeMap {
-		src += generate(k1, v1+"List", typeMap, methodsMap)
+		if v1[:1] == "*" {
+			src += generate(k1, v1[1:]+"List", typeMap, methodsMap)
+		} else {
+			src += generate(k1, v1+"List", typeMap, methodsMap)
+		}
 		src = f(src)
 	}
 
@@ -261,6 +265,12 @@ func getMapFunction(listName, typeName, targetType, targetTypeName string) strin
 	targetListName := targetType + "List"
 	if targetTypeName == "" {
 		targetListName = listName
+	} else if targetTypeName[:1] == "*" {
+		targetTypeName = targetTypeName[1:]
+	}
+
+	if targetListName[:1] == "*" {
+		targetListName = targetListName[1:]
 	}
 
 	return fmt.Sprintf(`
@@ -280,6 +290,12 @@ func getPMapFunction(listName, typeName, targetType, targetTypeName string) stri
 	targetListName := targetType + "List"
 	if targetTypeName == "" {
 		targetListName = listName
+	} else if targetTypeName[:1] == "*" {
+		targetTypeName = targetTypeName[1:]
+	}
+
+	if targetListName[:1] == "*" {
+		targetListName = targetListName[1:]
 	}
 
 	return fmt.Sprintf(`
@@ -472,10 +488,16 @@ func getAnyFunction(listName, typename, _, _ string) string {
 }
 
 func getFilterMapFunction(listName, typeName, targetType, targetTypeName string) string {
-	targetListName := targetType + "List"
 	if targetTypeName == "" {
 		//there's no need for a FilterMap function for the same time as the filter function suffices
 		return ""
+	} else if targetTypeName[:1] == "*" {
+		targetTypeName = targetTypeName[1:]
+	}
+
+	targetListName := targetType + "List"
+	if targetListName[:1] == "*" {
+		targetListName = targetListName[1:]
 	}
 
 	return fmt.Sprintf(`
@@ -501,10 +523,16 @@ func getFilterMapFunction(listName, typeName, targetType, targetTypeName string)
 }
 
 func getPFilterMapFunction(listName, typeName, targetType, targetTypeName string) string {
-	targetListName := targetType + "List"
 	if targetTypeName == "" {
 		//there's no need for a PFilterMap function for the same time as the pfilter function suffices
 		return ""
+	} else if targetTypeName[:1] == "*" {
+		targetTypeName = targetTypeName[1:]
+	}
+
+	targetListName := targetType + "List"
+	if targetListName[:1] == "*" {
+		targetListName = targetListName[1:]
 	}
 
 	return fmt.Sprintf(`
